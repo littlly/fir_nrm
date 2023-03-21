@@ -15,7 +15,7 @@ class settings(object):
         self.activation = 'relu'
 
         self.bitch_size = 256
-        self.num_epoch = 3
+        self.num_epoch = 1000
         self.use_gpu = True
         self.debug = False
 
