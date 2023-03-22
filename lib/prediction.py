@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.ticker as mticker
 from seetings import settings
+import random
 s = settings()
 
 def get_error_measures(denormal_y, denormal_predicted):
@@ -16,8 +17,47 @@ def get_error_measures(denormal_y, denormal_predicted):
 
 def draw_graph_station(dataset, yTest, yTestPred, visualise=1, ax=None, drawu = True):
 
+    if visualise:
+        if ax is None:
+            fig = plt.figure()
     #dataset is a class that contain the mean and variety of the data
-    udenormalYTest = dataset.denormalize_data(yTest)
+    #we need to draw 20 graphs in only one photo
+    if drawu:
+        k = 0
+    else:
+        k = 1
+    for i in range(20):
+        j = random.randint(0,len(yTestPred)-1)
+        udenormalYTest = dataset.denormalize_data(yTest[j][k])
+        udenormalPredicted = dataset.denormalize_data(yTestPred[j][0,k,:])
+        #we need to calculate the correlation coefficient
+        cor = np.corrcoef(udenormalYTest, udenormalPredicted)
+        
+        mae, rmse, nrmse_maxMin, nrmse_mean = get_error_measures(udenormalYTest, udenormalPredicted)
+        print('MAE = %7.7s - RMSE = %7.7s - nrmse_maxMin = %7.7s - nrmse_mean = %7.7s'%(mae, rmse, nrmse_maxMin, nrmse_mean))
+        print('correlation coefficient = %7.7s'%(cor[0,1]))
+        ax = fig.add_subplot(4,5,i+1)
+        ax.plot(udenormalYTest, label='Real', color='blue')
+        ax.plot(udenormalPredicted, label='Predicted', color='red')
+        ax.legend()
+        ax.set_title('Num_time {}'.format(j))
+
+
+    fig.suptitle('Final Epoch')
+    #we need to make the graph bigger
+    fig.set_size_inches(18.5, 10.5)
+    # we need to enlarger the spacebetween the graphs
+    fig.subplots_adjust(hspace=0.5)
+    filename = '{}/'.format(s.log_path)+str(k)+'FinalEpoch.svg'
+    plt.savefig(filename)
+    plt.close()
+
+
+    return mae, rmse, nrmse_maxMin, nrmse_mean
+        
+
+        
+#    udenormalYTest = dataset.denormalize_data(yTest)
     udenormalPredicted = dataset.denormalize_data(yTestPred)
 
     mae, rmse, nrmse_maxMin, nrmse_mean = get_error_measures(udenormalYTest, udenormalPredicted)

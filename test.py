@@ -4,6 +4,8 @@ import numpy as np
 from lib import Data, load_array, model, draw_graph_station
 import torch.nn as nn
 import torch.optim as optim
+import matplotlib.pyplot as plt
+
 
 
 from seetings import settings
@@ -19,7 +21,9 @@ path_model =  s.log_path + '/model_best.pth'
 val_loss, predict = model_use.test_model(path_model,test_iter)
 i = random.randint(1,len(predict))
 
-draw_graph_station(data_use,y_test[i][0],np.array(predict[i][0,0,:]))
+draw_graph_station(data_use,y_test,np.array(predict),drawu=True)
+
+
 
 
 
