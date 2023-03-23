@@ -24,7 +24,7 @@ class model(nn.Module):
         self.lin1 = nn.Linear(15552,2048)
         self.lin2 = nn.Linear(2048,256)
         self.lin3 = nn.Linear(256,2*s.output_horizon)
-        self.tre = TrendNormalize()
+        self.tre = TrendNormalize(trlr=0.5)
 
     def forward(self, x):
 

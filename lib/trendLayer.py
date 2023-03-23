@@ -2,9 +2,10 @@ import torch
 import torch.nn as nn
 
 class TrendNormalize(nn.Module):
-    def __init__(self, dim=-1):
+    def __init__(self, trlr ,dim=-1):
         super(TrendNormalize, self).__init__()
         self.dim = dim
+        self.trlr = trlr
 
     def forward(self, x):
         """
@@ -27,5 +28,5 @@ class TrendNormalize(nn.Module):
         # 将趋势化后的数据和趋势合并
         data_trend = torch.zeros_like(x)
         data_trend[...,0] = x[...,0]
-        data_trend[...,1:] = data_trend[...,:-1] + trend[...,:-1]
-        return data_trend
+        data_trend[...,1:] = data_trend[...,:-1] + trend[...,:-1] * self.trlr
+        return data_trend * std + mean

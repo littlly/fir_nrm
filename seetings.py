@@ -1,5 +1,16 @@
+from datetime import datetime
+now = datetime.now()
+datestring = now.strftime("%Y-%m-%d")
+
+import os 
+try:
+    os.mkdir('/media/cweg/c555f7e8-d283-4f4c-8f94-5997ca3e98a9/rmf/model_norm_new/'+datestring)
+    #end try
+except:
+    #pass
+    pass
 class settings(object):
-    def __init__(self, debug = False):
+    def __init__(self, datestring = datestring, debug = False):
         self.day = 2
         self.xcentral = 181
         self.ycentral = 141
@@ -19,7 +30,9 @@ class settings(object):
         self.use_gpu = True
         self.debug = False
 
+
+        self.datestring = datestring
         self.data_file='/media/cweg/c555f7e8-d283-4f4c-8f94-5997ca3e98a9/rmf/adaptor.mars.internal-1669533684.269949-25455-10-a450af95-380d-4cd3-a782-b24202b940dc.nc'
-        self.log_path = '/media/cweg/c555f7e8-d283-4f4c-8f94-5997ca3e98a9/rmf/model_norm_new'
+        self.log_path = '/media/cweg/c555f7e8-d283-4f4c-8f94-5997ca3e98a9/rmf/model_norm_new/'+self.datestring
 
         self.seed = 2020012595
