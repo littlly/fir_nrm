@@ -7,6 +7,9 @@ import numpy as np
 import torch.nn as nn
 import averager
 from seetings import settings
+
+from trendLayer import TrendNormalize
+
 s = settings()
 
 class model(nn.Module):
@@ -21,6 +24,7 @@ class model(nn.Module):
         self.lin1 = nn.Linear(15552,2048)
         self.lin2 = nn.Linear(2048,256)
         self.lin3 = nn.Linear(256,2*s.output_horizon)
+        self.tre = TrendNormalize()
 
     def forward(self, x):
 
@@ -37,6 +41,7 @@ class model(nn.Module):
         x = self.act(x)
         x = self.lin3(x)
         x = torch.reshape(x, (-1,2,s.output_horizon))
+        x = self.tre(x)
 
         return x
 
